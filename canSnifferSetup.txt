@@ -1,0 +1,19 @@
+
+setup ubuntu 
+
+sudo apt-get update
+sudo apt-get upgrade
+install virtualbox guest additions
+
+sudo apt-get install can-utils
+
+plug in CAN device (make sure it is selected to the vm can see it)
+dmesg | grep '\(can\|spi\)'
+	--> should see can0 here
+
+sudo ip link set can0 type can bitrate 250000
+sudo ip link set up can0
+cansniffer -c slcan0
+	--> starts the program so it should be working now
+
+cat twTest | python3 capstone_cansniffer.py -s twTest_filter.txt

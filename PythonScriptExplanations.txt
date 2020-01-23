@@ -1,0 +1,41 @@
+#  Michael Hegglin --> Team Kangaroo, winter 2020
+#  Description:
+#  		This file will serve as an overview as to what all these crazy python scripts do.
+#		Unfortunately, I'm apart of the 3rd group to do this, so there will still be lots of 
+#		holes in the documentation due to the fact that none was left before us.
+
+	|
+	|
+	|
+	|
+	|
+	|
+	|
+	|
+	|
+	|----- >>> setup.py
+	|				This script should only be used if the pip install fails.  As this is an ongoing project changes might 
+	|				be made causing the pip to fail.  If this is the case, direction for using the script are below.  DO NOT 
+	|				ALTER WHAT IS IN THIS SCRIPT!!!  Currently this is the only way of ensuring polycan can be manually setup.
+	|				
+	|				Directions:
+	|					Prerequisites: --> I'm going to put what worked for us here.  Depending on the current
+	|									   way you set this up, these prerequisites may be depreciated.
+	|						- a fresh install of the newest ubuntu version
+	|						- install python3 only
+	|					
+	|					1. python setup.py build
+	|					2. python setup.py clean
+	|					3. python setup.py install
+	|
+	|
+	|----- >>> 
+	|
+	|
+	|
+	|
+	|
+	|
+	|
+	|
+	
