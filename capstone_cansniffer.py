@@ -14,6 +14,10 @@
 #                                                                                   ____|
 ##
 
+#  currently need to add
+#       - output information on sorted proiority codes
+#       - 
+
 import sys
 import time
 
@@ -131,6 +135,75 @@ def get_file_stream(filtername):
 
     print()
 
+#  Definition:
+#       This method parses a line in a stream or file for
+#       prioity and destination numbers
+#
+def parse_priority(importance, line, mapping):
+    priority_bits = ""
+    source_addr = ""
+    destination_addr = ""
+
+    line = line.replace("-", "")
+    line = line.replace("RX", "")
+    line = ' '.join(line.split())
+    words = line.split(" ")
+
+    extra_bit = int(words[1][:1], 16)
+
+    if (extra_bit & 0x01) == 1:
+        priority_bits = "1"
+    else:
+        priority_bits = "0"
+
+    regular_bits = int(words[1][1:2], 16)
+    regular_bits = (regular_bits >> 2) 
+    source_addr = words[1][6:8]
+    destination_addr = words[1][4:6]
+
+    if regular_bits == 3:
+        priority_bits += "11"
+    elif regular_bits == 2:
+        priority_bits += "10"
+    else:
+        priority_bits += "01"
+
+    priority_num = int(priority_bits, 2)
+    if priority_num <= importance:
+        if line not in mapping:
+            print(line + "\n\tPriority: " + str(priority_num) + "\n\tSource Address: " + source_addr + "\n\tDestination Address: " + destination_addr + "\n")
+            mapping[line] = 1
+        else:
+            mapping[line] = mapping[line] + 1
+
+    return mapping
+
+#  Description:
+#       This method will take in a stream from the terminal and output
+#       codes below a certain priority that is given by the user
+#
+def output_priority_stream(importance):
+    mapping = {}
+
+    for line in sys.stdin:
+        mapping = parse_priority(importance, line, mapping)
+
+    print()
+
+def output_priority_file(importance, filename):
+    mapping = {}
+
+    try:
+        with open(filename, "r") as file_ptr:
+            for line in file_ptr:
+                mapping = parse_priority(importance, line, mapping)
+
+    except:
+        print("failed to run second check.  Failed to open file for reading")
+    
+    print()
+    return mapping
+
 #  Description:
 #       This method is only run if this python file is run separately on 
 #       it's own (python streamparser.py <log name here>).  It allows 
@@ -141,16 +214,38 @@ def get_file_stream(filtername):
 #
 if __name__ == "__main__":
 
+    if (len(sys.argv) < 2):
+        print("Hey, cansniffer here! Please run the below:")
+        print("\t\t$> python3 capstone_cansniffer.py -h")
+        sys.exit(-1)
+
     if "-h" in sys.argv or "-help" in sys.argv or "--help" in sys.argv:
         print("\nUsage options: (python3 capstone_cansniffer.py [OPTIONS])")
-        print("Standard Usage: python3 capstone_cansniffer.py <file1 broken codes> <file2 working codes>\n")
+        print("Standard Usage: python3 capstone_cansniffer.py --run_checks <file1 broken codes> <file2 working codes> <priority number>\n")
         print("-s : terminal pipe, data is being streamed to")
         print("\t-Example: candump [OPTIONS] | python3 capstone_cansniffer.py -s <filter file>\n")
         print("-f : single file input, dumps the frequency of each code in the terminal")
         print("\t-Example: python3 capstone_cansniffer.py -f <file1>\n")
         print("-cbf : single file input, gets all codes with a frequency lower than the number specified")
         print("\t-Example: python3 capstone_cansniffer.py -cbf <file1> <frequency number>\n")
-        print("--help or -h : help to show options\n")
+        print("--prioritysort : single file input or stream.")
+        print("\t-Example: cat <filename> | python3 capstone_cansniffer.py --prioritysort <priority numbers <= you want>")
+        print("\t-Example: candump [OPTIONS] | python3 capstone_cansniffer.py --prioritysort <priority numbers <= you want>\n")
+        print("\n--help or -h : help to show options\n")
+        sys.exit(0)
+
+    if "--run_checks" in sys.argv:
+        print("\n\n---->CHECK 1: CODE FREQUENCY AND SIMILARITY CHECK\n\n")
+        broken_codes_mapping = load_dictionary(sys.argv[2])
+        working_codes_mapping = load_dictionary(sys.argv[3])
+        code_diff(broken_codes_mapping, working_codes_mapping, sys.argv[1])
+
+        print("\n\n---->CHECK 2: PRIORITY CODE CHECK ON BAD CODES FILE\n\n")
+        output_priority_file(int(sys.argv[4]), sys.argv[2])
+        sys.exit(0)
+
+    if "--prioritysort" in sys.argv:
+        output_priority_stream(int(sys.argv[2]))
         sys.exit(0)
 
     if "-s" in sys.argv and len(sys.argv) == 3:
@@ -166,13 +261,3 @@ if __name__ == "__main__":
         code_mapping = load_dictionary(sys.argv[2])
         codes_below_freq(code_mapping, int(sys.argv[3]))
         sys.exit(0)
-
-    if (len(sys.argv) < 3):
-        print("Hey, cansniffer here! I need a log file name as input when run offline. ")
-        print("Please enter the below when running for standard usage:")
-        print("python3 streamparser.py <file1 broken codes here> <file2 working codes here>")
-        sys.exit(-1)
-
-    broken_codes_mapping = load_dictionary(sys.argv[1])
-    working_codes_mapping = load_dictionary(sys.argv[2])
-    sys.exit(code_diff(broken_codes_mapping, working_codes_mapping, sys.argv[1]))
