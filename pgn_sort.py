@@ -37,8 +37,6 @@ def parse_codes(pgn_num_to_find, output_filename):
         temp = line
         pgn_dec = parse_pgn_from_line(line)
 
-        print(pgn_dec)
-        print(pgn_num_to_find)
         if pgn_dec == int(pgn_num_to_find):
             mapping[temp] = "new"
             file.write(temp)
