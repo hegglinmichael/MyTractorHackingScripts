@@ -1,0 +1,37 @@
+0C78 Electronic Engine Controller 16
+0C78 Electronic Engine Controller 16
+0C7E Electronic Engine Controller 16
+0C7F Electronic Engine Controller 16
+0C7F Electronic Engine Controller 16
+0C7F Electronic Engine Controller 16
+0C7F Electronic Engine Controller 16
+0000 Torque/Speed Control 1
+F003 Electronic Engine Controller 2
+F004 Electronic Engine Controller 1
+F005 Electronic Transmission Controller 2
+F006 Electronic Axle Controller 1
+FD7C Diesel Particulate Filter Control 1
+FDB3 Aftertreatment 1 Outlet Gas 2
+FE68 Vehicle Fluids
+FE69 Engine Temperature 3
+FED5 Alternator Information
+FEDF Electronic Engine Controller 3
+FEE5 Engine Hours Revolutions
+FEE7 Vehicle Hours
+FEEE Engine Temperature 1
+FEEF Engine Fluid Level/Pressure 1
+FEF1 Cruise Control/Vehicle Speed 1
+FEF2 Fuel Economy (Liquid)
+FEF5 Ambient Conditions
+FEF6 Intake/Exhaust Conditions 1
+FEF7 Vehicle Electrical Power 1
+FEFC Dash Display 1
+FDDF Front Wheel Drive Status
+FE44 (We think) Secondary or front takeoff power output 
+FE43 (We think) Primary or rear takeoff power output 
+FE49 (We Think) Ground based speed and distance
+EFFF (We Think) Arm rest switch matrix commands
+EF00 (We Think) Proprietary aid
+EFFA Propietary A
+FFFA Propietary B
+EA00 Well stimulation pump sensor calibration

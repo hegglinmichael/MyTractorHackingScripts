@@ -2,22 +2,25 @@
 
 import sys
 
+def parse_pgn(line):
+    line = line.replace("-", "")
+    line = line.replace("RX", "")
+    line = ' '.join(line.split())
+
+    line_pieces = line.split(" ")
+    can_id = line_pieces[1]
+    return can_id[2:6]
+
 def remove_duplicate_codes(filename):
     mapping = {}
 
     with open(filename, "r") as file_ptr:
         for line in file_ptr:
-            code = ""
-            line = line.replace("-", "")
-            line = line.replace("RX", "")
-            line = ' '.join(line.split())
+            temp = line
+            pgn = parse_pgn(temp)
 
-            line_pieces = line.split(" ")
-            for i in range(3, len(line_pieces)):
-                code += line_pieces[i]
-
-            if code not in mapping:
-                mapping[code] = 1
+            if pgn not in mapping:
+                mapping[pgn] = line[0:len(line) - 1]
 
     return mapping
 
@@ -29,7 +32,7 @@ if __name__ == "__main__":
     
     removed_dup_mapping = remove_duplicate_codes(sys.argv[1])
     for i in removed_dup_mapping:
-        print("Code: " + i)
+        print(removed_dup_mapping[i])
 
 
 
