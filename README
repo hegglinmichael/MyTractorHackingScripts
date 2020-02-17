@@ -10,4 +10,87 @@ into error codes that the average farmer could read.
 The parsing of these codes has to do with grouping so that 
 we can try decode John Deere's codes
 
+FUTURE GROUPS DEVELOPING, INFO BELOW
+-------------------------------------------------------------------
+***OUR GROUP USED OPEN SOURCE CAN_UTILS WHICH IS WAY EASER, AND WE RECOMMEND***
+
+IF YOU WANT TO SETUP POLYCAN INSTEAD, HERE ARE THE DIRECTIONS
+
+
+          *******************************************************************************
+          *																				*
+		  *  This is a tutorial for setting up and running Polycan on Ubuntu OS 19.10.  *
+		  *      If you have questions feel free to email me at avuong04@calpoly.edu    *
+		  *									 											*
+		  *  The Polycan Github instructions were a good template for setting up. A few *
+          *   minor changes are needed to make the setup smoother. Here are the steps.  *
+		  * 																			*
+          *******************************************************************************
+
+1) Make sure to install vim on your Ubuntu OS. Step by step instructions:
+
+ 	a) Open terminal from your "Show Applications" located in bottom left corner
+	b) Type this into command line: sudo apt install --assume-yes vim
+           *Should not take longer than a minute
+
+2) Make sure to install git on your Ubuntu OS. Step by step instructions:
+	
+        a) If not already, open up your terminal
+	b) Type this into command line: sudo apt-get install git
+	   *Installation begins and should finish within 10 minutes
+        c) Change your directory to where you want to save the Polycan program
+           *For example cd /home/anthony/Documents/Capstone/iFixitSoftware
+ 	d) Now we want to configure your username and email.
+           Have a github account setup prior to the steps below. Replace email_id and user_name with your info
+           i) Type this into command line: git config --global user.name "user_name"
+           ii) Then type this into command line: git config --global user.email "email_id"
+        e) Everything should be good to go! 
+
+3) Make sure to have pip3 installed on your Ubuntu OS. If you don't have it please install. Steps to install pip3:
+
+	a) If not already, open terminal from your "Show Applications"
+ 	b) Type this into command line: sudo apt install python3-pip
+	c) The downloader will ask for permission to download. Type "y" and
+           then enter.
+        d) Download and installation should finish within a minute.
+
+4) Next you should install the Polycan program. Steps to install Polycan:
+
+	a) Type this into command line: sudo pip3 install git+https://github.com/TractorHacking/polycan
+        b) The download should be quick here. 
+
+5) After you've installed the Polycan device, an update is needed. Do the following:
+
+	a) Type this into command line: sudo pip3 install git+https://github.com/TractorHacking/polycan --upgrade
+ 	b) This is a quickie as well. ;)
+
+6) After steps 2 and 3 are completed, Polycan files should be full copied over to your working directory. However
+   the program environment needs to be configured. Follow these steps:
+
+	a) For this, make sure you are in your remote git branch and have a repository created. 
+  	   Type this into command line: git clone https://github.com/TractorHacking/polycan
+        b) Final step is to install the path environment commands to the path.
+           Type the following: sudo pip3 install -e git+https://github.com/TractorHacking/polycan#egg=polycan
+
+7) Polycan should be able to run by typing this into the command line when you are outside the polycan folder directory:   Type this to run: polycan
+
+8) With Polycan set up and ready to run, you want to change how the program connects with the CANNABLE Board. Do the following:
+
+	a) Change directory to Polycan, then change directory into CANNABLE. lol
+	b) Now there is a bash script called bringUp.py. Edit that script with vim. 
+		i) Type this into command line: vim bringUp.py
+		ii) For the lines starting with "ip", you want to add "sudo" before it. This is Ubuntu's equivalent of "run" in Windows.
+		    Also, change "ifconfig" to "ip -a" or just copy and past below to the script:
+		    
+		    #!/bin/bash
+
+		    sudo ip link set up can0
+		    sudo ip link set can0 type can bitrate 250000
+		    ip -a | grep "can0"
+	c) Now you can run this script by doing this:
+	 	i) chmod +x bringUP
+		ii) ./bringUP
+	d) The CANNABLE is now coonected to the program - indication both gree and red light are not lit.
+
+9) Finally the program is ready to go! Enjoy!
 
