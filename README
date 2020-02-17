@@ -1,0 +1,13 @@
+
+All of these scripts have to do with sending data back
+to the tractor, or parsing the codes the in the tractor
+
+
+This is for a capstone project where my team was 
+working with iFixit to translate John Deere's proprietary codes
+into error codes that the average farmer could read.
+
+The parsing of these codes has to do with grouping so that 
+we can try decode John Deere's codes
+
+
