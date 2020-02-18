@@ -32,6 +32,10 @@ FE43 (We think) Primary or rear takeoff power output
 FE49 (We Think) Ground based speed and distance
 EFFF (We Think) Arm rest switch matrix commands
 EF00 (We Think) Proprietary aid
-EFFA Propietary A
-FFFA Propietary B
+EFFA Propietary A THIS IS WHAT YOU WANT TO DECODE
+FFFA Propietary B THIS IS WHAT YOU WANT TO DECODE
 EA00 Well stimulation pump sensor calibration
+FFFF Propietary B THIS IS WHAT YOU WANT TO DECODE
+FFFB Propietary B THIS IS WHAT YOU WANT TO DECODE
+EA00 Request
+EAFF (We think) data transfer after request
