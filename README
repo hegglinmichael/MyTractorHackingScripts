@@ -1,4 +1,77 @@
 
+
+Text Document Explanations
+*** Only look at the text documents described here.  All other documents contain information that probably isn’t important to future development.  ***
+
+known_codes.txt
+This file contains all currently known codes along with all the descriptions of the codes.  This document also contains labels for proprietary codes even though the codes are not known.  
+
+*** Only change the contents of this file if more codes are known ***
+
+Examples:
+Known code: 0C78 Electronic Engine Controller 16  
+Labeled Proprietary code: FFFF Proprietary B THIS IS WHAT YOU WANT TO DECODE  
+
+turnWarning
+
+The contents of turn warning are that of a candump stream.  The candump tool (look at documentation of can-utils for further explanation of this tool) was run with its standard out pointed at a file.  While the stream was being taken from the tractor, the turn warning was turned on.  We were hoping to discover the turn warning code from this stream, however after repetitive and labeled codes were filtered out, no code sent back to the tractor would turn on the blinker. 
+ twControl
+
+The contents of this document are that of a candump stream(look at documentation of can-utils for further explanation of this tool).  This file contains the stream of data taken from the tractor with nothing happening to it(meaning the tractor is on, but we are not touching it).  It was taken to match against the turnWarning file in the hopes that there would be a few differing codes which would show us what code the turn signal is.  This was not the case.
+
+twControl2
+
+Same as twControl, just done again.  This was done again so two control files could be matched up against each other to see how different they are.  It was seen that the streams have a lot of similar codes, but there were still some differences.  This led us to believe that we’d have to take many control and test samples for comparisons.
+
+Note:  Other ideas the team has tried include but not limited to:
+creating filter files with multiple control out streams combined
+creating filter files for pgn, priority, destination, source, data, etc with control files
+Grouping pgn, priority, destination, source, data, etc
+
+
+Scripting Documentation
+
+*** Disclaimer! I do not recommend using my scripts.  The reason being is that I did not design for these scripts to be used as tooling.  The purpose was to play with the tractor code stream, and see if I could find any reasonable pattern or groupings.  I recommend that future developers either copy pieces of my code and write their own tools, or look at what is written for ideas on what could be done next. DO NOT LOOK AT SCRIPTS I DON’T INCLUDE HERE!  They could be half finished, or we decided to take different directions many times during the project and they might not have something to do with the current direction of the project***
+
+capstone_cansniffer.py
+
+	Usage: python3 capstone_cansniffer.py -h
+	
+	Description:
+I started writing this as a tool, but then decided against it as I wanted to keep everything used either as well documented open source tools, or as small code snippets that are written by a team.  Running the command above in the usage should tell you everything needed to know about how to use the script.  However, to sum it up its functionalities are below:
+Parsing by priority and filtering codes out with lower priorities
+Filtering by the amount of times (code data) appears
+Checks to similarities between two files data based on code data
+
+
+code_frequency_counter.py
+
+	Usage: python3 code_frequency_counter.py <filename>
+
+	Description:
+This script, contradictory to the name, just outputs to the screen a list of all the pgn codes with duplicates taken out.  I recommend pointing stdout to a file when running.
+
+map_known_codes.py
+
+Usage candump: candump can0 | python3 map_known_codes.py <file full of known codes 
+with their description>
+	Usage text file: cat <text file name> | python3 map_known_codes.py <file full of known 
+codes with their description>
+
+	Description:
+This script is used to map all the already known PGN codes to the candump being streamed by the candump tool.  It maps by pgn number.  If someone were to run this against a text file instead of candump I recommend you remove all duplicate codes first, then map the known codes.
+
+source_and_dest_sort.py
+
+	Usage: python3 source_and_dest_sort.py <file of logged codes file>
+
+	Description:
+This script takes in a log file full of a stream of candump codes.  It takes all the codes in the file, and sorts them by their source and destination numbers.
+
+*** Note: other scripts were written, but they didn’t lead to any new discoveries.  They are being left out so that the next work group can decide what they want to test and what patterns they want to look for ***
+
+
+
 All of these scripts have to do with sending data back
 to the tractor, or parsing the codes the in the tractor
 
